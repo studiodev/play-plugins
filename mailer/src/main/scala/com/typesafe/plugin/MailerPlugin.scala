@@ -1,20 +1,49 @@
 package com.typesafe.plugin
 
 import org.apache.commons.mail._
-
-import java.util.concurrent.Future
-import java.lang.reflect._
 import javax.mail.internet.InternetAddress
-
-import scala.collection.JavaConversions._
+import java.io.File
+import scala.io.Source
 
 import play.api._
-import play.api.Configuration._
 
 trait MailerAPI extends MailerApiJavaInterop {
 
-  /* Sets a subject for this email.*/
+  /**
+   * Sets a subject for this email. It enables formatting of the providing string using Java's
+   * string formatter.
+   *
+   * @param subject
+   * @param args
+   */
+  def setSubject(subject: String, args: AnyRef*): MailerAPI
+
+  /**
+   * Adds an email recipient in CC.
+   *
+   * @param ccRecipients
+   */
+  def addCc(ccRecipients: String*): MailerAPI
+
+  /**
+   * Adds an email recipient in BCC.
+   *
+   * @param bccRecipients
+   */
+  def addBcc(bccRecipients: String*): MailerAPI
+
+  /**
+   * Adds an email recipient ("to" addressee).
+   *
+   * @param recipients
+   */
+  def addRecipient(recipients: String*): MailerAPI
+
+  /**
+   *  Sets a subject for this email.
+   */
   def setSubject(subject: String): MailerAPI
+
   /**
    * Defines the sender of this email("from" address).
    *
@@ -64,7 +93,7 @@ trait MailerAPI extends MailerApiJavaInterop {
   /**
    * Sends an Html email based on the provided data.
    *
-   * @param bodyText : pass a string or use a Play! text template to generate the template
+   * @param bodyHtml : pass a string or use a Play! text template to generate the template
    *  like view.Mails.templateText(tags).
    * like view.Mails.templateHtml(tags).
    * @return
@@ -192,7 +221,7 @@ trait MailerBuilder extends MailerAPI {
   /**
    * Sends an Html email based on the provided data.
    *
-   * @param bodyText : pass a string or use a Play! text template to generate the template
+   * @param bodyHtml : pass a string or use a Play! text template to generate the template
    *  like view.Mails.templateText(tags).
    * like view.Mails.templateHtml(tags).
    * @return
@@ -207,7 +236,6 @@ trait MailerBuilder extends MailerAPI {
  *  the EmailNotifier trait by Aishwarya Singhal
  *  and also Justin Long's gist)
  */
-
 class CommonsMailer(smtpHost: String, smtpPort: Int, smtpSsl: Boolean, smtpTls: Boolean, smtpUser: Option[String], smtpPass: Option[String]) extends MailerBuilder {
 
   /**
@@ -341,4 +369,3 @@ class CommonsMailerPlugin(app: play.api.Application) extends MailerPlugin {
 
   def email = mailerInstance
 }
-

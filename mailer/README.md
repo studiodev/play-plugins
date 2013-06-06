@@ -2,6 +2,18 @@
 
 This plugin provides a simple emailer.
 
+## Difference with the typesafe plugin?
+
+
+* This plugin allow to add attachments to the mail
+
+```
+val mail = use[MailerPlugin].email
+mail.addAttachment(new File("foo.txt")) // Attach file as 'foo.txt'
+mail.addAttachment(new File("foo.txt"), Some("bar.txt")) // Attach file as 'bar.txt'
+```
+
+* Updated commons-email (1.2 -> 1.3)
 ## installation
 
 play 2.0.x:
