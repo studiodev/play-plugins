@@ -1,6 +1,10 @@
-# Play  Plugins
+# Play Plugins
 
 plugins for the Play framework
+
+#  Mailer
+
+Custom version of the Typesafe Mailer. Add support for `attachments`.
 
 ## Licence
 
