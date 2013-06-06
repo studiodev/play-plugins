@@ -20,23 +20,22 @@ trait MailerAPI extends MailerApiJavaInterop {
    *
    * @param from
    */
-  def addFrom(from: String): MailerAPI 
+  def addFrom(from: String): MailerAPI
 
   /**
    * Defines the "reply to" email address.
    *
    * @param replyTo
    */
-  def setReplyTo(replyTo: String): MailerAPI 
+  def setReplyTo(replyTo: String): MailerAPI
 
   /**
    * Sets the charset for this email.
    *
    * @param charset
    */
-  def setCharset(charset: String): MailerAPI 
+  def setCharset(charset: String): MailerAPI
 
- 
   /**
    * Adds a request header to this email message.
    *
@@ -45,16 +44,15 @@ trait MailerAPI extends MailerApiJavaInterop {
    */
   def addHeader(key: String, value: String): MailerAPI
 
-
-   /**
-   * Sends a text email based on the provided data. 
+  /**
+   * Sends a text email based on the provided data.
    *
    * @param bodyText : pass a string or use a Play! text template to generate the template
    */
   def send(bodyText: String): Unit
-  
+
   /**
-   * Sends an email based on the provided data. 
+   * Sends an email based on the provided data.
    *
    * @param bodyText : pass a string or use a Play! text template to generate the template
    * @param bodyHtml : pass a string or use a Play! text template to generate the template
@@ -64,22 +62,22 @@ trait MailerAPI extends MailerApiJavaInterop {
   def send(bodyText: String, bodyHtml: String): Unit
 
   /**
-   * Sends an Html email based on the provided data. 
+   * Sends an Html email based on the provided data.
    *
    * @param bodyText : pass a string or use a Play! text template to generate the template
    *  like view.Mails.templateText(tags).
    * like view.Mails.templateHtml(tags).
    * @return
    */
-  def sendHtml(bodyHtml: String): Unit 
-  
+  def sendHtml(bodyHtml: String): Unit
+
 }
 
 trait MailerBuilder extends MailerAPI {
 
-  protected val context = new ThreadLocal[collection.mutable.Map[String,List[String]]] {
-    protected override def initialValue(): collection.mutable.Map[String,List[String]] = {
-      collection.mutable.Map[String,List[String]]()
+  protected val context = new ThreadLocal[collection.mutable.Map[String, List[String]]] {
+    protected override def initialValue(): collection.mutable.Map[String, List[String]] = {
+      collection.mutable.Map[String, List[String]]()
     }
   }
 
@@ -89,7 +87,7 @@ trait MailerBuilder extends MailerAPI {
    */
   protected def e(key: String): List[String] = {
     if (key.contains("-"))
-      context.get.toList.filter(_._1 == key.split("-")(0)).map(e=> e._1.split("-")(1)+"-"+e._2.head)
+      context.get.toList.filter(_._1 == key.split("-")(0)).map(e => e._1.split("-")(1) + "-" + e._2.head)
     else
       context.get.get(key).getOrElse(List[String]())
   }
@@ -116,7 +114,7 @@ trait MailerBuilder extends MailerAPI {
    * @param from
    */
   def addFrom(from: String): MailerAPI = {
-    context.get += ("from"-> List(from))
+    context.get += ("from" -> List(from))
     this
   }
 
@@ -126,7 +124,7 @@ trait MailerBuilder extends MailerAPI {
    * @param ccRecipients
    */
   def addCc(ccRecipients: String*): MailerAPI = {
-    context.get += ("ccRecipients"->ccRecipients.toList)
+    context.get += ("ccRecipients" -> ccRecipients.toList)
     this
   }
 
@@ -136,55 +134,53 @@ trait MailerBuilder extends MailerAPI {
    * @param bccRecipients
    */
   def addBcc(bccRecipients: String*): MailerAPI = {
-    context.get += ("bccRecipients"->bccRecipients.toList)
+    context.get += ("bccRecipients" -> bccRecipients.toList)
     this
   }
-  
+
   /**
    * Adds an email recipient ("to" addressee).
    *
    * @param recipients
    */
   def addRecipient(recipients: String*): MailerAPI = {
-    context.get += ("recipients"->recipients.toList)
+    context.get += ("recipients" -> recipients.toList)
     this
   }
-  
+
   /**
    * Defines the "reply to" email address.
    *
    * @param replyTo
    */
   def setReplyTo(replyTo: String): MailerAPI = {
-    context.get += ("replyTo"->List(replyTo))
+    context.get += ("replyTo" -> List(replyTo))
     this
   }
-  
+
   /**
    * Sets the charset for this email.
    *
    * @param charset
    */
   def setCharset(charset: String): MailerAPI = {
-     context.get += ("charset"->List(charset))
-     this
+    context.get += ("charset" -> List(charset))
+    this
   }
 
-  
-  
   /**
    * Adds a request header to this email message.
    *
    * @param key
    * @param value
    */
-  def addHeader(key: String, value: String): MailerAPI  = {
-    context.get += ("header-"+key->List(value))
+  def addHeader(key: String, value: String): MailerAPI = {
+    context.get += ("header-" + key -> List(value))
     this
   }
 
   /**
-   * Sends a text email based on the provided data. 
+   * Sends a text email based on the provided data.
    *
    * @param bodyText : pass a string or use a Play! text template to generate the template
    *  like view.Mails.templateText(tags).
@@ -193,8 +189,8 @@ trait MailerBuilder extends MailerAPI {
    */
   def send(bodyText: String): Unit = send(bodyText, "")
 
-    /**
-   * Sends an Html email based on the provided data. 
+  /**
+   * Sends an Html email based on the provided data.
    *
    * @param bodyText : pass a string or use a Play! text template to generate the template
    *  like view.Mails.templateText(tags).
@@ -212,10 +208,10 @@ trait MailerBuilder extends MailerAPI {
  *  and also Justin Long's gist)
  */
 
-class CommonsMailer(smtpHost: String,smtpPort: Int,smtpSsl: Boolean, smtpTls: Boolean, smtpUser: Option[String], smtpPass: Option[String]) extends MailerBuilder {
+class CommonsMailer(smtpHost: String, smtpPort: Int, smtpSsl: Boolean, smtpTls: Boolean, smtpUser: Option[String], smtpPass: Option[String]) extends MailerBuilder {
 
   /**
-   * Sends an email based on the provided data. 
+   * Sends an email based on the provided data.
    *
    * @param bodyText : pass a string or use a Play! text template to generate the template
    * @param bodyHtml : pass a string or use a Play! text template to generate the template
@@ -224,7 +220,7 @@ class CommonsMailer(smtpHost: String,smtpPort: Int,smtpSsl: Boolean, smtpTls: Bo
    * @return
    */
   def send(bodyText: String, bodyHtml: String): Unit = {
-    val email = createEmailer(bodyText,bodyHtml)
+    val email = createEmailer(bodyText, bodyHtml)
     email.setCharset(e("charset").headOption.getOrElse("utf-8"))
     email.setSubject(e("subject").headOption.getOrElse(""))
     e("from").foreach(setAddress(_) { (address, name) => email.setFrom(address, name) })
@@ -237,7 +233,7 @@ class CommonsMailer(smtpHost: String,smtpPort: Int,smtpSsl: Boolean, smtpTls: Bo
     email.setSmtpPort(smtpPort)
     email.setSSL(smtpSsl)
     email.setTLS(smtpTls)
-    for(u <- smtpUser; p <- smtpPass) yield email.setAuthenticator(new DefaultAuthenticator(u, p))
+    for (u <- smtpUser; p <- smtpPass) yield email.setAuthenticator(new DefaultAuthenticator(u, p))
     email.setDebug(false)
     email.send
     context.get.clear()
@@ -278,9 +274,9 @@ class CommonsMailer(smtpHost: String,smtpPort: Int,smtpSsl: Boolean, smtpTls: Bo
       e.setMsg(bodyText)
       e
     } else if (bodyText == null || bodyText == "")
-        new HtmlEmail().setHtmlMsg(bodyHtml)
-      else
-        new HtmlEmail().setHtmlMsg(bodyHtml).setTextMsg(bodyText)
+      new HtmlEmail().setHtmlMsg(bodyHtml)
+    else
+      new HtmlEmail().setHtmlMsg(bodyHtml).setTextMsg(bodyText)
   }
 
 }
@@ -312,7 +308,7 @@ case object MockMailer extends MailerBuilder {
 /**
  * plugin interface
  */
-trait MailerPlugin extends  play.api.Plugin {
+trait MailerPlugin extends play.api.Plugin {
   def email: MailerAPI
 }
 

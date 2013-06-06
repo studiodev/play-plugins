@@ -30,6 +30,6 @@ public interface MailerApiJavaInterop {
    *
    * @param recipients
    */
-  public  MailerAPI addRecipient(String... recipients); 
+  public MailerAPI addRecipient(String... recipients); 
   
 }
