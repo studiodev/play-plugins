@@ -2,10 +2,9 @@
 
 This plugin provides a simple emailer.
 
-## Difference with the typesafe plugin?
+## What new in this custom module?
 
-
-* This plugin allow to add attachments to the mail
+- This plugin allow to add attachments to the mail
 
 ```
 val mail = use[MailerPlugin].email
@@ -13,18 +12,44 @@ mail.addAttachment(new File("foo.txt")) // Attach file as 'foo.txt'
 mail.addAttachment(new File("foo.txt"), Some("bar.txt")) // Attach file as 'bar.txt'
 ```
 
-* Updated commons-email (1.2 -> 1.3)
+- Updated commons-email (1.2 -> 1.3)
+- Updated documentation
+
 ## installation
 
-play 2.0.x:
+**conf/Build.scala**
 
-* add ```"com.typesafe" %% "play-plugins-mailer" % "2.0.4"``` to your dependencies (```project/Build.scala```)
+```
+object ApplicationBuild extends Build {
 
+  val appName         = "xxxxx"
+  val appVersion      = "1.0-SNAPSHOT"
 
-and then
-* add ```1500:com.typesafe.plugin.CommonsMailerPlugin``` to your ```conf/play.plugins```
+  val studiodevRepo = Seq(
+    "Studiodev repository releases" at "http://studiodev.github.io/mvn-repo/releases",
+    "Studiodev repository snapshot" at "http://studiodev.github.io/mvn-repo/snapshots"
+  )
 
-furthermore, the following parameters can be configured in ```conf/application.conf```
+  val appDependencies = Seq(
+    "fr.studio-dev"  %% "play-plugins-mailer" % "3.0.0"
+  )
+
+  val buildSettings = Defaults.defaultSettings ++ ScalaFormat.settings ++ Seq (
+    resolvers ++= studiodevRepo
+  )
+
+  val main = play.Project(appName, appVersion, appDependencies, settings = buildSettings)
+
+}
+```
+
+**conf/play.plugins**
+
+Add ```1500:com.typesafe.plugin.CommonsMailerPlugin``` to your ```conf/play.plugins```
+
+**conf/application.conf**
+
+Configure the SMTP server:
 
 ```
 smtp.host (mandatory)
@@ -34,7 +59,6 @@ smtp.tls (defaults to no)
 smtp.user (optional)
 smtp.password (optional)
 ```
-
 
 ## using it from java 
 
