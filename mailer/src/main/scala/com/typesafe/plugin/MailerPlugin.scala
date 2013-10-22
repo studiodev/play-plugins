@@ -294,6 +294,7 @@ class CommonsMailer(smtpHost: String, smtpPort: Int, smtpSsl: Boolean, smtpTls: 
     email.setDebug(false)
     email.send
     context.get.clear()
+    contextAttachment.get.clear()
   }
 
   /**
