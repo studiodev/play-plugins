@@ -1,0 +1,12 @@
+How to deploy a new version ?
+cd mailer
+nano project/Build.scala > Update version
+sbt
+publish
+
+cd ....../mvn-repo
+git add .
+git commit -m "xxx"
+git push
+
+DONE!
