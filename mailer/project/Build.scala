@@ -7,7 +7,7 @@ import scalariform.formatter.preferences._
 object MinimalBuild extends Build {
 
   lazy val buildName = "play-plugins-mailer"
-  lazy val buildVersion = "3.0.0"
+  lazy val buildVersion = "3.0.2"
   lazy val playVersion = "2.1.1"
 
   lazy val typesafe = "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
