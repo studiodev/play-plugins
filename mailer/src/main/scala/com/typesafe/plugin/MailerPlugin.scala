@@ -6,6 +6,7 @@ import java.io.File
 import scala.io.Source
 
 import play.api._
+import scala.util.Try
 
 trait MailerAPI extends MailerApiJavaInterop {
 
@@ -371,9 +372,13 @@ case object MockMailer extends MailerBuilder {
     }
     contextAttachment.get().foreach {
       case (name, file) => {
-        Logger.info("attachement: " + name)
-        val content = Source.fromFile(file).toList.mkString
-        Logger.info(content)
+        Logger.info("attachment: " + name)
+        Try {
+          val content = Source.fromFile(file).toList.mkString
+          Logger.info(content)
+        } recover {
+          case _ => Logger.info("[Binary file]")
+        }
         Logger.info("---")
       }
     }
